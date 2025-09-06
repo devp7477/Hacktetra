@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynergySphere - Advanced Team Collaboration Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    borderRadius: {
+                        lg: "var(--radius)",
+                        md: "calc(var(--radius) - 2px)",
+                        sm: "calc(var(--radius) - 4px)",
+                    },
+                    colors: {
+                        background: "var(--background)",
+                        foreground: "var(--foreground)",
+                        card: {
+                            DEFAULT: "var(--card)",
+                            foreground: "var(--card-foreground)",
+                        },
+                        popover: {
+                            DEFAULT: "var(--popover)",
+                            foreground: "var(--popover-foreground)",
+                        },
+                        primary: {
+                            DEFAULT: "var(--primary)",
+                            foreground: "var(--primary-foreground)",
+                        },
+                        secondary: {
+                            DEFAULT: "var(--secondary)",
+                            foreground: "var(--secondary-foreground)",
+                        },
+                        muted: {
+                            DEFAULT: "var(--muted)",
+                            foreground: "var(--muted-foreground)",
+                        },
+                        accent: {
+                            DEFAULT: "var(--accent)",
+                            foreground: "var(--accent-foreground)",
+                        },
+                        destructive: {
+                            DEFAULT: "var(--destructive)",
+                            foreground: "var(--destructive-foreground)",
+                        },
+                        border: "var(--border)",
+                        input: "var(--input)",
+                        ring: "var(--ring)",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "var(--font-sans)"],
+                    }
+                },
+            }
+        };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --background: hsl(240 10% 3.9%);
+            --foreground: hsl(0 0% 98%);
+            --card: hsl(240 10% 3.9%);
+            --card-foreground: hsl(0 0% 98%);
+            --popover: hsl(240 10% 3.9%);
+            --popover-foreground: hsl(0 0% 98%);
+            --primary: hsl(217 91% 60%);
+            --primary-foreground: hsl(0 0% 98%);
+            --secondary: hsl(240 4.8% 15.9%);
+            --secondary-foreground: hsl(0 0% 98%);
+            --muted: hsl(240 3.7% 15.9%);
+            --muted-foreground: hsl(240 5% 64.9%);
+            --accent: hsl(240 3.7% 15.9%);
+            --accent-foreground: hsl(0 0% 98%);
+            --destructive: hsl(0 62.8% 30.6%);
+            --destructive-foreground: hsl(0 0% 98%);
+            --border: hsl(240 3.7% 15.9%);
+            --input: hsl(240 3.7% 15.9%);
+            --ring: hsl(217 91% 60%);
+            --radius: 0.5rem;
+        }
+
+        .light {
+            --background: hsl(0 0% 100%);
+            --foreground: hsl(240 10% 3.9%);
+            --card: hsl(0 0% 100%);
+            --card-foreground: hsl(240 10% 3.9%);
+            --popover: hsl(0 0% 100%);
+            --popover-foreground: hsl(240 10% 3.9%);
+            --primary: hsl(217 91% 60%);
+            --primary-foreground: hsl(0 0% 98%);
+            --secondary: hsl(240 4.8% 95.9%);
+            --secondary-foreground: hsl(240 5.9% 10%);
+            --muted: hsl(240 4.8% 95.9%);
+            --muted-foreground: hsl(240 3.8% 46.1%);
+            --accent: hsl(240 4.8% 95.9%);
+            --accent-foreground: hsl(240 5.9% 10%);
+            --destructive: hsl(0 84.2% 60.2%);
+            --destructive-foreground: hsl(0 0% 98%);
+            --border: hsl(240 5.9% 90%);
+            --input: hsl(240 5.9% 90%);
+            --ring: hsl(217 91% 60%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar-collapsed {
+            width: 4rem;
+        }
+
+        .sidebar-expanded {
+            width: 16rem;
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground">
+    <!-- Login Page -->
+    <!-- @COMPONENT: LoginPage -->
+    <div id="loginPage" class="min-h-screen flex">
+        <!-- Left Panel - Branding -->
+        <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-accent relative overflow-hidden">
+            <!-- Abstract geometric background pattern -->
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-20 left-20 w-32 h-32 border-2 border-white rounded-full"></div>
+                <div class="absolute top-40 right-32 w-24 h-24 bg-white/10 rounded-lg rotate-45"></div>
+                <div class="absolute bottom-32 left-32 w-20 h-20 border-2 border-white rounded-lg"></div>
+            </div>
+            
+            <div class="flex flex-col justify-center px-12 z-10">
+                <div class="mb-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-project-diagram text-primary text-xl"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold text-white">SynergySphere</h1>
+                    </div>
+                    <p class="text-xl text-white/90 mb-8">Advanced Team Collaboration Platform</p>
+                    <p class="text-white/80 text-lg leading-relaxed">
+                        Transform how your team collaborates. Streamline projects, enhance communication, 
+                        and boost productivity with intelligent workflows designed for modern teams.
+                    </p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center text-white/90">
+                        <i class="fas fa-check-circle mr-3 text-green-300"></i>
+                        <span>Real-time collaboration</span>
+                    </div>
+                    <div class="flex items-center text-white/90">
+                        <i class="fas fa-check-circle mr-3 text-green-300"></i>
+                        <span>Smart project management</span>
+                    </div>
+                    <div class="flex items-center text-white/90">
+                        <i class="fas fa-check-circle mr-3 text-green-300"></i>
+                        <span>Mobile-first design</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Login Form -->
+        <div class="flex-1 flex items-center justify-center p-8">
+            <div class="w-full max-w-md">
+                <div class="lg:hidden mb-8 text-center">
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mr-3">
+                            <i class="fas fa-project-diagram text-white text-xl"></i>
+                        </div>
+                        <h1 class="text-2xl font-bold">SynergySphere</h1>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold mb-2">Welcome back</h2>
+                    <p class="text-muted-foreground">Sign in to your account to continue</p>
+                </div>
+
+                <form class="space-y-6" data-mock="true">
+                    <div>
+                        <label for="email" class="block text-sm font-medium mb-2">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            class="w-full px-3 py-2 bg-input border border-border rounded-md focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
+                            placeholder="Enter your email"
+                            data-mock="true"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="password" class="block text-sm font-medium mb-2">Password</label>
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                class="w-full px-3 py-2 bg-input border border-border rounded-md focus:ring-2 focus:ring-ring focus:border-transparent transition-colors pr-10"
+                                placeholder="Enter your password"
+                                data-mock="true"
+                            >
+                            <button type="button" class="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground">
+                                <i class="fas fa-eye text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-border text-primary focus:ring-ring">
+                            <span class="ml-2 text-sm text-muted-foreground">Remember me</span>
+                        </label>
+                        <a href="#" class="text-sm text-primary hover:underline">Forgot password?</a>
+                    </div>
+
+                    <button 
+                        type="button" 
+                        class="w-full bg-primary text-primary-foreground py-2.5 rounded-md font-medium hover:bg-primary/90 transition-colors"
+                        onclick="showDashboard()"
+                        data-implementation="Should validate credentials and authenticate user"
+                    >
+                        Sign in
+                    </button>
+                </form>
+
+                <div class="mt-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-border"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-background text-muted-foreground">Or continue with</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 grid grid-cols-2 gap-3">
+                        <button class="flex items-center justify-center px-4 py-2 border border-border rounded-md hover:bg-accent transition-colors">
+                            <i class="fab fa-google mr-2"></i>
+                            <span class="text-sm">Google</span>
+                        </button>
+                        <button class="flex items-center justify-center px-4 py-2 border border-border rounded-md hover:bg-accent transition-colors">
+                            <i class="fab fa-microsoft mr-2"></i>
+                            <span class="text-sm">Microsoft</span>
+                        </button>
+                    </div>
+                </div>
+
+                <p class="mt-6 text-center text-sm text-muted-foreground">
+                    Don't have an account? 
+                    <button onclick="showSignup()" class="text-primary hover:underline font-medium">Sign up</button>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: LoginPage -->
+
+    <!-- Sign Up Page -->
+    <!-- @COMPONENT: SignupPage -->
+    <div id="signupPage" class="min-h-screen flex hidden">
+        <!-- Left Panel - Same as login -->
+        <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-accent relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-20 left-20 w-32 h-32 border-2 border-white rounded-full"></div>
+                <div class="absolute top-40 right-32 w-24 h-24 bg-white/10 rounded-lg rotate-45"></div>
+                <div class="absolute bottom-32 left-32 w-20 h-20 border-2 border-white rounded-lg"></div>
+            </div>
+            
+            <div class="flex flex-col justify-center px-12 z-10">
+                <div class="mb-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-project-diagram text-primary text-xl"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold text-white">SynergySphere</h1>
+                    </div>
+                    <p class="text-xl text-white/90 mb-8">Join thousands of teams</p>
+                    <p class="text-white/80 text-lg leading-relaxed">
+                        Start your journey with the most powerful team collaboration platform. 
+                        Create your account and transform how your team works together.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Signup Form -->
+        <div class="flex-1 flex items-center justify-center p-8">
+            <div class="w-full max-w-md">
+                <div class="lg:hidden mb-8 text-center">
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mr-3">
+                            <i class="fas fa-project-diagram text-white text-xl"></i>
+                        </div>
+                        <h1 class="text-2xl font-bold">SynergySphere</h1>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold mb-2">Create account</h2>
+                    <p class="text-muted-foreground">Get started with your free account</p>
+                </div>
+
+                <form class="space-y-6" data-mock="true">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="firstName" class="block text-sm font-medium mb-2">First name</label>
+                            <input 
+                                type="text" 
+                                id="firstName" 
+                                class="w-full px-3 py-2 bg-input border border-border rounded-md focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
+                                placeholder="John"
+                                data-mock="true"
+                            >
+                        </div>
+                        <div>
+                            <label for="lastName" class="block text-sm font-medium mb-2">Last name</label>
+                            <input 
+                                type="text" 
+                                id="lastName" 
+                                class="w-full px-3 py-2 bg-input border border-border rounded-md focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
+                                placeholder="Doe"
+                                data-mock="true"
+                            >
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="signupEmail" class="block text-sm font-medium mb-2">Email</label>
+                        <input 
+                            type="email" 
+                            id="signupEmail" 
+                            class="w-full px-3 py-2 bg-input border border-border rounded-md focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
+                            placeholder="john@company.com"
+                            data-mock="true"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="signupPassword" class="block text-sm font-medium mb-2">Password</label>
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="signupPassword" 
+                                class="w-full px-3 py-2 bg-input border border-border rounded-md focus:ring-2 focus:ring-ring focus:border-transparent transition-colors pr-10"
+                                placeholder="Create a strong password"
+                                data-mock="true"
+                            >
+                            <button type="button" class="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground">
+                                <i class="fas fa-eye text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium mb-2">Confirm password</label>
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            class="w-full px-3 py-2 bg-input border border-border rounded-md focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
+                            placeholder="Confirm your password"
+                            data-mock="true"
+                        >
+                    </div>
+
+                    <div class="flex items-start">
+                        <input type="checkbox" class="rounded border-border text-primary focus:ring-ring mt-1">
+                        <span class="ml-2 text-sm text-muted-foreground">
+                            I agree to the <a href="#" class="text-primary hover:underline">Terms of Service</a> and 
+                            <a href="#" class="text-primary hover:underline">Privacy Policy</a>
+                        </span>
+                    </div>
+
+                    <button 
+                        type="button" 
+                        class="w-full bg-primary text-primary-foreground py-2.5 rounded-md font-medium hover:bg-primary/90 transition-colors"
+                        onclick="showDashboard()"
+                        data-implementation="Should validate form and create user account"
+                    >
+                        Create account
+                    </button>
+                </form>
+
+                <p class="mt-6 text-center text-sm text-muted-foreground">
+                    Already have an account? 
+                    <button onclick="showLogin()" class="text-primary hover:underline font-medium">Sign in</button>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: SignupPage -->
+
+    <!-- Main Application Layout -->
+    <!-- @COMPONENT: MainLayout -->
+    <div id="mainApp" class="hidden min-h-screen bg-background">
+        <!-- Desktop Sidebar -->
+        <div id="sidebar" class="fixed left-0 top-0 h-full bg-card border-r border-border sidebar-expanded transition-all duration-300 z-30 hidden lg:block">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="p-4 border-b border-border">
+                    <div class="flex items-center" id="logoContainer">
+                        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-project-diagram text-primary-foreground"></i>
+                        </div>
+                        <span class="font-semibold text-lg" id="logoText">SynergySphere</span>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="flex-1 p-4 space-y-2">
+                    <a href="#" onclick="showProjects()" class="nav-item flex items-center p-3 rounded-lg hover:bg-accent transition-colors text-muted-foreground hover:text-foreground" id="navProjects">
+                        <i class="fas fa-folder w-5 text-center mr-3"></i>
+                        <span class="nav-text">Projects</span>
+                    </a>
+                    <a href="#" onclick="showMyTasks()" class="nav-item flex items-center p-3 rounded-lg hover:bg-accent transition-colors text-muted-foreground hover:text-foreground" id="navTasks">
+                        <i class="fas fa-tasks w-5 text-center mr-3"></i>
+                        <span class="nav-text">My Tasks</span>
+                    </a>
+                    <a href="#" onclick="showTeam()" class="nav-item flex items-center p-3 rounded-lg hover:bg-accent transition-colors text-muted-foreground hover:text-foreground" id="navTeam">
+                        <i class="fas fa-users w-5 text-center mr-3"></i>
+                        <span class="nav-text">Team</span>
+                    </a>
+                    <a href="#" onclick="showCalendar()" class="nav-item flex items-center p-3 rounded-lg hover:bg-accent transition-colors text-muted-foreground hover:text-foreground" id="navCalendar">
+                        <i class="fas fa-calendar w-5 text-center mr-3"></i>
+                        <span class="nav-text">Calendar</span>
+                    </a>
+                    <a href="#" onclick="showAnalytics()" class="nav-item flex items-center p-3 rounded-lg hover:bg-accent transition-colors text-muted-foreground hover:text-foreground" id="navAnalytics">
+                        <i class="fas fa-chart-bar w-5 text-center mr-3"></i>
+                        <span class="nav-text">Analytics</span>
+                    </a>
+                </nav>
+
+                <!-- User Profile -->
+                <div class="p-4 border-t border-border">
+                    <div class="flex items-center" id="userProfile">
+                        <!-- A professional headshot of a smiling person in business attire -->
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" alt="User Avatar" class="w-8 h-8 rounded-full mr-3">
+                        <div class="profile-info">
+                            <div class="font-medium text-sm" data-bind="user.name">Alex Johnson</div>
+                            <div class="text-xs text-muted-foreground" data-bind="user.role">Project Manager</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="lg:ml-64" id="mainContent">
+            <!-- Top Header -->
+            <header class="bg-card border-b border-border p-4 lg:p-6">
+                <div class="flex items-center justify-between">
+                    <!-- Left side -->
+                    <div class="flex items-center">
+                        <button onclick="toggleSidebar()" class="lg:hidden mr-4 p-2 hover:bg-accent rounded-lg transition-colors">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <button onclick="toggleSidebar()" class="hidden lg:block mr-4 p-2 hover:bg-accent rounded-lg transition-colors">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h1 class="text-xl lg:text-2xl font-semibold" id="pageTitle">Projects</h1>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Search -->
+                        <div class="hidden md:block">
+                            <div class="relative">
+                                <input type="text" placeholder="Search projects, tasks..." class="pl-10 pr-4 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent w-64">
+                                <i class="fas fa-search absolute left-3 top-2.5 text-muted-foreground"></i>
+                            </div>
+                        </div>
+
+                        <!-- Notifications -->
+                        <button onclick="toggleNotifications()" class="relative p-2 hover:bg-accent rounded-lg transition-colors">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
+                        </button>
+
+                        <!-- Dark mode toggle -->
+                        <button onclick="toggleDarkMode()" class="p-2 hover:bg-accent rounded-lg transition-colors">
+                            <i class="fas fa-moon dark-mode-icon"></i>
+                        </button>
+
+                        <!-- User menu -->
+                        <div class="relative">
+                            <button onclick="toggleUserMenu()" class="flex items-center space-x-2 p-2 hover:bg-accent rounded-lg transition-colors">
+                                <!-- Same professional headshot -->
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" alt="User Avatar" class="w-8 h-8 rounded-full">
+                                <i class="fas fa-chevron-down text-sm"></i>
+                            </button>
+                            
+                            <!-- User Dropdown -->
+                            <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-popover border border-border rounded-lg shadow-lg z-40 hidden">
+                                <div class="p-4 border-b border-border">
+                                    <div class="font-medium" data-bind="user.name">Alex Johnson</div>
+                                    <div class="text-sm text-muted-foreground" data-bind="user.email">alex@company.com</div>
+                                </div>
+                                <div class="py-2">
+                                    <a href="#" class="block px-4 py-2 hover:bg-accent transition-colors">
+                                        <i class="fas fa-user mr-2"></i>Profile
+                                    </a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-accent transition-colors">
+                                        <i class="fas fa-cog mr-2"></i>Settings
+                                    </a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-accent transition-colors">
+                                        <i class="fas fa-question-circle mr-2"></i>Help
+                                    </a>
+                                    <hr class="my-2 border-border">
+                                    <a href="#" onclick="showLogin()" class="block px-4 py-2 hover:bg-accent transition-colors text-destructive">
+                                        <i class="fas fa-sign-out-alt mr-2"></i>Sign out
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Projects View -->
+            <!-- @COMPONENT: ProjectsView -->
+            <div id="projectsView" class="p-4 lg:p-6">
+                <!-- Header Actions -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
+                    <div>
+                        <h2 class="text-lg font-medium mb-1">My Projects</h2>
+                        <p class="text-sm text-muted-foreground">Manage and track your team projects</p>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button class="px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors flex items-center">
+                            <i class="fas fa-filter mr-2"></i>Filter
+                        </button>
+                        <button onclick="showCreateProject()" class="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors flex items-center">
+                            <i class="fas fa-plus mr-2"></i>New Project
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-card border border-border rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-blue-500/10 rounded-lg mr-3">
+                                <i class="fas fa-folder text-blue-500"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-semibold" data-bind="stats.totalProjects">12</div>
+                                <div class="text-sm text-muted-foreground">Total Projects</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-card border border-border rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-green-500/10 rounded-lg mr-3">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-semibold" data-bind="stats.activeProjects">8</div>
+                                <div class="text-sm text-muted-foreground">Active</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-card border border-border rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-yellow-500/10 rounded-lg mr-3">
+                                <i class="fas fa-clock text-yellow-500"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-semibold" data-bind="stats.onHoldProjects">2</div>
+                                <div class="text-sm text-muted-foreground">On Hold</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-card border border-border rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-gray-500/10 rounded-lg mr-3">
+                                <i class="fas fa-archive text-gray-500"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-semibold" data-bind="stats.completedProjects">2</div>
+                                <div class="text-sm text-muted-foreground">Completed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projects Grid -->
+                <!-- @MAP: projects.map(project => ( -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Project Card 1 -->
+                    <div onclick="showProjectDetail('mobile-app')" class="bg-card border border-border rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer" data-mock="true">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="p-3 bg-primary/10 rounded-lg">
+                                <i class="fas fa-mobile-alt text-primary text-xl"></i>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <span class="px-2 py-1 bg-green-500/10 text-green-500 text-xs rounded-full">Active</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-semibold text-lg mb-2" data-bind="project.name">Mobile App Redesign</h3>
+                        <p class="text-muted-foreground text-sm mb-4" data-bind="project.description">Complete redesign of the mobile application with new UI/UX and improved user experience</p>
+                        
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex -space-x-2">
+                                <!-- Team member avatars - diverse professional headshots -->
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b1d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=24&h=24" alt="Team member" class="w-6 h-6 rounded-full border-2 border-background">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=24&h=24" alt="Team member" class="w-6 h-6 rounded-full border-2 border-background">
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=24&h=24" alt="Team member" class="w-6 h-6 rounded-full border-2 border-background">
+                                <div class="w-6 h-6 rounded-full bg-muted border-2 border-background flex items-center justify-center">
+                                    <span class="text-xs font-medium">+2</span>
+                                </div>
+                            </div>
+                            <span class="text-sm text-muted-foreground" data-bind="project.deadline">Dec 15, 2024</span>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-muted-foreground">Progress</span>
+                                <span class="font-medium" data-bind="project.progress">75%</span>
+                            </div>
+                            <div class="w-full bg-muted rounded-full h-2">
+                                <div class="bg-primary h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div onclick="showProjectDetail('website-launch')" class="bg-card border border-border rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer" data-mock="true">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="p-3 bg-green-500/10 rounded-lg">
+                                <i class="fas fa-globe text-green-500 text-xl"></i>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <span class="px-2 py-1 bg-green-500/10 text-green-500 text-xs rounded-full">Active</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-semibold text-lg mb-2" data-bind="project.name">Website Launch</h3>
+                        <p class="text-muted-foreground text-sm mb-4" data-bind="project.description">Launch of the new company website with updated branding and content management system</p>
+                        
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex -space-x-2">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=24&h=24" alt="Team member" class="w-6 h-6 rounded-full border-2 border-background">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=24&h=24" alt="Team member" class="w-6 h-6 rounded-full border-2 border-background">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=24&h=24" alt="Team member" class="w-6 h-6 rounded-full border-2 border-background">
+                            </div>
+                            <span class="text-sm text-muted-foreground" data-bind="project.deadline">Jan 10, 2025</span>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-muted-foreground">Progress</span>
+                                <span class="font-medium" data-bind="project.progress">45%</span>
+                            </div>
+                            <div class="w-full bg-muted rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 45%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 3 -->
+                    <div onclick="showProjectDetail('api-integration')" class="bg-card border border-border rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer" data-mock="true">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="p-3 bg-purple-500/10 rounded-lg">
+                                <i class="fas fa-code text-purple-500 text-xl"></i>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <span class="px-2 py-1 bg-yellow-500/10 text-yellow-500 text-xs rounded-full">On Hold</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-semibold text-lg mb-2" data-bind="project.name">API Integration</h3>
+                        <p class="text-muted-foreground text-sm mb-4" data-bind="project.description">Integration with third-party APIs for enhanced functionality and data synchronization</p>
+                        
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex -space-x-2">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=24&h=24" alt="Team member" class="w-6 h-6 rounded-full border-2 border-background">
+                                <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=24&h=24" alt="Team member" class="w-6 h-6 rounded-full border-2 border-background">
+                            </div>
+                            <span class="text-sm text-muted-foreground" data-bind="project.deadline">TBD</span>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-muted-foreground">Progress</span>
+                                <span class="font-medium" data-bind="project.progress">20%</span>
+                            </div>
+                            <div class="w-full bg-muted rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 20%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+            <!-- @END_COMPONENT: ProjectsView -->
+
+            <!-- Project Detail View -->
+            <!-- @COMPONENT: ProjectDetailView -->
+            <div id="projectDetailView" class="p-4 lg:p-6 hidden">
+                <!-- Breadcrumb -->
+                <nav class="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
+                    <button onclick="showProjects()" class="hover:text-foreground">Projects</button>
+                    <i class="fas fa-chevron-right text-xs"></i>
+                    <span class="text-foreground" data-bind="project.name">Mobile App Redesign</span>
+                </nav>
+
+                <!-- Project Header -->
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 space-y-4 lg:space-y-0">
+                    <div class="flex items-start space-x-4">
+                        <div class="p-4 bg-primary/10 rounded-xl">
+                            <i class="fas fa-mobile-alt text-primary text-2xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl lg:text-3xl font-bold mb-2" data-bind="project.name">Mobile App Redesign</h1>
+                            <p class="text-muted-foreground mb-4" data-bind="project.description">Complete redesign of the mobile application with new UI/UX and improved user experience</p>
+                            <div class="flex flex-wrap items-center gap-4 text-sm">
+                                <div class="flex items-center">
+                                    <i class="fas fa-calendar-alt mr-2 text-muted-foreground"></i>
+                                    <span>Due: Dec 15, 2024</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-users mr-2 text-muted-foreground"></i>
+                                    <span>5 members</span>
+                                </div>
+                                <span class="px-3 py-1 bg-green-500/10 text-green-500 text-xs rounded-full">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <button onclick="showChat()" class="px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors flex items-center">
+                            <i class="fas fa-comments mr-2"></i>Chat
+                        </button>
+                        <button class="px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors flex items-center">
+                            <i class="fas fa-cog mr-2"></i>Settings
+                        </button>
+                        <button onclick="showCreateTask()" class="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors flex items-center">
+                            <i class="fas fa-plus mr-2"></i>New Task
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project Progress -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="lg:col-span-2">
+                        <div class="bg-card border border-border rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold">Project Progress</h3>
+                                <span class="text-2xl font-bold text-primary" data-bind="project.progress">75%</span>
+                            </div>
+                            <div class="w-full bg-muted rounded-full h-3 mb-4">
+                                <div class="bg-primary h-3 rounded-full" style="width: 75%"></div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div>
+                                    <div class="text-2xl font-semibold text-muted-foreground" data-bind="tasks.total">24</div>
+                                    <div class="text-sm text-muted-foreground">Total Tasks</div>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-semibold text-green-500" data-bind="tasks.completed">18</div>
+                                    <div class="text-sm text-muted-foreground">Completed</div>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-semibold text-yellow-500" data-bind="tasks.remaining">6</div>
+                                    <div class="text-sm text-muted-foreground">Remaining</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="bg-card border border-border rounded-lg p-6">
+                            <h3 class="text-lg font-semibold mb-4">Team Members</h3>
+                            <div class="space-y-3">
+                                <!-- Team member list with different professional avatars -->
+                                <div class="flex items-center space-x-3" data-mock="true">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" alt="Alex Johnson" class="w-8 h-8 rounded-full">
+                                    <div class="flex-1">
+                                        <div class="font-medium text-sm" data-bind="member.name">Alex Johnson</div>
+                                        <div class="text-xs text-muted-foreground" data-bind="member.role">Project Manager</div>
+                                    </div>
+                                    <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                </div>
+                                <div class="flex items-center space-x-3" data-mock="true">
+                                    <img src="https://pixabay.com/get/gaaf4c9666e36ce1447bfa5728c667ce44bf9c3b8f17d4b82b701815e921bfe64cb4ed8d3ab8360819345be5597abe5c0a6853efefa96a043b5843aa525603684_1280.jpg" alt="Sarah Chen" class="w-8 h-8 rounded-full">
+                                    <div class="flex-1">
+                                        <div class="font-medium text-sm" data-bind="member.name">Sarah Chen</div>
+                                        <div class="text-xs text-muted-foreground" data-bind="member.role">UI/UX Designer</div>
+                                    </div>
+                                    <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                </div>
+                                <div class="flex items-center space-x-3" data-mock="true">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" alt="Mike Rodriguez" class="w-8 h-8 rounded-full">
+                                    <div class="flex-1">
+                                        <div class="font-medium text-sm" data-bind="member.name">Mike Rodriguez</div>
+                                        <div class="text-xs text-muted-foreground" data-bind="member.role">Frontend Dev</div>
+                                    </div>
+                                    <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                                </div>
+                                <div class="flex items-center space-x-3" data-mock="true">
+                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" alt="Emma Wilson" class="w-8 h-8 rounded-full">
+                                    <div class="flex-1">
+                                        <div class="font-medium text-sm" data-bind="member.name">Emma Wilson</div>
+                                        <div class="text-xs text-muted-foreground" data-bind="member.role">QA Engineer</div>
+                                    </div>
+                                    <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tasks Section -->
+                <div class="bg-card border border-border rounded-lg">
+                    <div class="p-6 border-b border-border">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold">Tasks</h3>
+                            <div class="flex items-center space-x-3">
+                                <select class="px-3 py-1 bg-input border border-border rounded text-sm">
+                                    <option>All Tasks</option>
+                                    <option>To Do</option>
+                                    <option>In Progress</option>
+                                    <option>Done</option>
+                                </select>
+                                <button onclick="showCreateTask()" class="text-primary hover:text-primary/80 transition-colors">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Task List -->
+                    <div class="divide-y divide-border">
+                        <!-- Task Item 1 -->
+                        <div class="p-6 hover:bg-accent/50 transition-colors cursor-pointer" onclick="showTaskDetail('task-1')" data-mock="true">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex items-center mt-1">
+                                    <input type="checkbox" class="rounded border-border text-primary focus:ring-ring">
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-3 mb-2">
+                                        <h4 class="font-medium" data-bind="task.title">Design new user onboarding flow</h4>
+                                        <span class="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">High</span>
+                                        <span class="px-2 py-1 bg-yellow-500/10 text-yellow-500 text-xs rounded-full">In Progress</span>
+                                    </div>
+                                    <p class="text-sm text-muted-foreground mb-3" data-bind="task.description">Create wireframes and mockups for the new user onboarding experience</p>
+                                    <div class="flex items-center space-x-4 text-sm text-muted-foreground">
+                                        <div class="flex items-center">
+                                            <img src="https://pixabay.com/get/ga33a1f99e0850dda5274b3866dc1e16c87250fde180e1a49c50a8db8edc5dcdfacf3654cd2c200561af933ab6b04e9b955401f30b5e35f32747b32bcbe46dd13_1280.jpg" alt="Assignee" class="w-5 h-5 rounded-full mr-2">
+                                            <span data-bind="task.assignee.name">Sarah Chen</span>
+                                        </div>
+                                        <span data-bind="task.dueDate">Due Dec 10</span>
+                                        <span class="flex items-center">
+                                            <i class="fas fa-comment mr-1"></i>3
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Task Item 2 -->
+                        <div class="p-6 hover:bg-accent/50 transition-colors cursor-pointer" onclick="showTaskDetail('task-2')" data-mock="true">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex items-center mt-1">
+                                    <input type="checkbox" checked class="rounded border-border text-primary focus:ring-ring">
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-3 mb-2">
+                                        <h4 class="font-medium line-through text-muted-foreground" data-bind="task.title">Implement responsive navigation</h4>
+                                        <span class="px-2 py-1 bg-green-500/10 text-green-500 text-xs rounded-full">Medium</span>
+                                        <span class="px-2 py-1 bg-green-500/10 text-green-500 text-xs rounded-full">Done</span>
+                                    </div>
+                                    <p class="text-sm text-muted-foreground mb-3" data-bind="task.description">Build responsive navigation component for mobile and desktop</p>
+                                    <div class="flex items-center space-x-4 text-sm text-muted-foreground">
+                                        <div class="flex items-center">
+                                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=20&h=20" alt="Assignee" class="w-5 h-5 rounded-full mr-2">
+                                            <span data-bind="task.assignee.name">Mike Rodriguez</span>
+                                        </div>
+                                        <span data-bind="task.completedDate">Completed Dec 5</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Task Item 3 -->
+                        <div class="p-6 hover:bg-accent/50 transition-colors cursor-pointer" onclick="showTaskDetail('task-3')" data-mock="true">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex items-center mt-1">
+                                    <input type="checkbox" class="rounded border-border text-primary focus:ring-ring">
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-3 mb-2">
+                                        <h4 class="font-medium" data-bind="task.title">Test mobile performance</h4>
+                                        <span class="px-2 py-1 bg-destructive/10 text-destructive text-xs rounded-full">High</span>
+                                        <span class="px-2 py-1 bg-muted text-muted-foreground text-xs rounded-full">To Do</span>
+                                    </div>
+                                    <p class="text-sm text-muted-foreground mb-3" data-bind="task.description">Conduct performance testing on various mobile devices and optimize</p>
+                                    <div class="flex items-center space-x-4 text-sm text-muted-foreground">
+                                        <div class="flex items-center">
+                                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=20&h=20" alt="Assignee" class="w-5 h-5 rounded-full mr-2">
+                                            <span data-bind="task.assignee.name">Emma Wilson</span>
+                                        </div>
+                                        <span data-bind="task.dueDate">Due Dec 12</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: ProjectDetailView -->
+
+            <!-- Chat Panel (Slide-in) -->
+            <!-- @COMPONENT: ChatPanel -->
+            <div id="chatPanel" class="fixed right-0 top-0 h-full w-80 bg-card border-l border-border transform translate-x-full transition-transform duration-300 z-40">
+                <div class="flex flex-col h-full">
+                    <!-- Chat Header -->
+                    <div class="p-4 border-b border-border flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold" data-bind="project.name">Mobile App Redesign</h3>
+                            <p class="text-sm text-muted-foreground">5 members</p>
+                        </div>
+                        <button onclick="hideChat()" class="p-2 hover:bg-accent rounded-lg transition-colors">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div class="flex-1 overflow-y-auto p-4 space-y-4">
+                        <!-- Message 1 -->
+                        <div class="flex items-start space-x-3" data-mock="true">
+                            <img src="https://pixabay.com/get/gdf6c035bff510148458628abd685a117c99dbc138124f2c34958f938d66766a5958433f217272f8b32cf22ce52faf4335173464c0393c8ff5f099c8e6e71cb18_1280.jpg" alt="Sarah Chen" class="w-8 h-8 rounded-full">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="font-medium text-sm" data-bind="message.author">Sarah Chen</span>
+                                    <span class="text-xs text-muted-foreground" data-bind="message.timestamp">2:30 PM</span>
+                                </div>
+                                <div class="bg-muted rounded-lg p-3 text-sm" data-bind="message.content">
+                                    I've finished the wireframes for the onboarding flow. Could someone review them before I start on the high-fidelity mockups?
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Message 2 -->
+                        <div class="flex items-start space-x-3" data-mock="true">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" alt="Alex Johnson" class="w-8 h-8 rounded-full">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="font-medium text-sm" data-bind="message.author">Alex Johnson</span>
+                                    <span class="text-xs text-muted-foreground" data-bind="message.timestamp">2:32 PM</span>
+                                </div>
+                                <div class="bg-muted rounded-lg p-3 text-sm" data-bind="message.content">
+                                    Looks great! I'll review them this afternoon and get back to you with feedback.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Message 3 -->
+                        <div class="flex items-start space-x-3" data-mock="true">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" alt="Mike Rodriguez" class="w-8 h-8 rounded-full">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="font-medium text-sm" data-bind="message.author">Mike Rodriguez</span>
+                                    <span class="text-xs text-muted-foreground" data-bind="message.timestamp">2:45 PM</span>
+                                </div>
+                                <div class="bg-muted rounded-lg p-3 text-sm" data-bind="message.content">
+                                    Just finished the responsive navigation. It's ready for testing on mobile devices.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Current user message -->
+                        <div class="flex items-start space-x-3 flex-row-reverse" data-mock="true">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" alt="You" class="w-8 h-8 rounded-full">
+                            <div class="text-right">
+                                <div class="flex items-center space-x-2 mb-1 justify-end">
+                                    <span class="text-xs text-muted-foreground" data-bind="message.timestamp">2:47 PM</span>
+                                    <span class="font-medium text-sm" data-bind="message.author">You</span>
+                                </div>
+                                <div class="bg-primary text-primary-foreground rounded-lg p-3 text-sm" data-bind="message.content">
+                                    Perfect! I'll coordinate with Emma for the testing phase. Great work everyone! 🎉
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="p-4 border-t border-border">
+                        <div class="flex items-end space-x-3">
+                            <div class="flex-1">
+                                <textarea 
+                                    placeholder="Type a message..." 
+                                    class="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent resize-none"
+                                    rows="2"
+                                    data-mock="true"
+                                ></textarea>
+                            </div>
+                            <button class="p-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors" data-implementation="Should send message to chat">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between mt-2 text-xs text-muted-foreground">
+                            <div class="flex items-center space-x-2">
+                                <button class="hover:text-foreground">
+                                    <i class="fas fa-paperclip"></i>
+                                </button>
+                                <button class="hover:text-foreground">
+                                    <i class="fas fa-smile"></i>
+                                </button>
+                            </div>
+                            <span>Press Enter to send</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: ChatPanel -->
+        </div>
+
+        <!-- Mobile Bottom Navigation -->
+        <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border p-2">
+            <div class="flex items-center justify-around">
+                <button onclick="showProjects()" class="flex flex-col items-center p-2 text-primary" id="mobileNavProjects">
+                    <i class="fas fa-folder text-lg mb-1"></i>
+                    <span class="text-xs">Projects</span>
+                </button>
+                <button onclick="showMyTasks()" class="flex flex-col items-center p-2 text-muted-foreground hover:text-foreground" id="mobileNavTasks">
+                    <i class="fas fa-tasks text-lg mb-1"></i>
+                    <span class="text-xs">Tasks</span>
+                </button>
+                <button onclick="showTeam()" class="flex flex-col items-center p-2 text-muted-foreground hover:text-foreground" id="mobileNavTeam">
+                    <i class="fas fa-users text-lg mb-1"></i>
+                    <span class="text-xs">Team</span>
+                </button>
+                <button onclick="showProfile()" class="flex flex-col items-center p-2 text-muted-foreground hover:text-foreground" id="mobileNavProfile">
+                    <i class="fas fa-user text-lg mb-1"></i>
+                    <span class="text-xs">Profile</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: MainLayout -->
+
+    <!-- Create Project Modal -->
+    <!-- @COMPONENT: CreateProjectModal -->
+    <div id="createProjectModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-card border border-border rounded-lg w-full max-w-2xl max-h-[90vh] overflow-hidden">
+            <div class="flex items-center justify-between p-6 border-b border-border">
+                <h2 class="text-xl font-semibold">Create New Project</h2>
+                <button onclick="hideCreateProject()" class="p-2 hover:bg-accent rounded-lg transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto">
+                <form class="space-y-6" data-mock="true">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="projectName" class="block text-sm font-medium mb-2">Project Name *</label>
+                            <input 
+                                type="text" 
+                                id="projectName" 
+                                class="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                                placeholder="Enter project name"
+                                data-mock="true"
+                            >
+                        </div>
+                        
+                        <div>
+                            <label for="projectManager" class="block text-sm font-medium mb-2">Project Manager</label>
+                            <select id="projectManager" class="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent">
+                                <option>Select manager...</option>
+                                <option data-bind="user.name">Alex Johnson</option>
+                                <option>Sarah Chen</option>
+                                <option>Mike Rodriguez</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="projectDescription" class="block text-sm font-medium mb-2">Description</label>
+                        <textarea 
+                            id="projectDescription" 
+                            rows="3"
+                            class="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                            placeholder="Describe your project..."
+                            data-mock="true"
+                        ></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="projectDeadline" class="block text-sm font-medium mb-2">Deadline</label>
+                            <input 
+                                type="date" 
+                                id="projectDeadline" 
+                                class="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                                data-mock="true"
+                            >
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Priority</label>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center">
+                                    <input type="radio" name="priority" value="low" class="mr-2">
+                                    <span class="text-sm">Low</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="priority" value="medium" checked class="mr-2">
+                                    <span class="text-sm">Medium</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="priority" value="high" class="mr-2">
+                                    <span class="text-sm">High</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Team Members</label>
+                        <div class="border border-border rounded-lg p-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <img src="https://pixabay.com/get/ga33a1f99e0850dda5274b3866dc1e16c87250fde180e1a49c50a8db8edc5dcdfacf3654cd2c200561af933ab6b04e9b955401f30b5e35f32747b32bcbe46dd13_1280.jpg" alt="Sarah Chen" class="w-8 h-8 rounded-full">
+                                    <div>
+                                        <div class="font-medium text-sm">Sarah Chen</div>
+                                        <div class="text-xs text-muted-foreground">UI/UX Designer</div>
+                                    </div>
+                                </div>
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-ring">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" alt="Mike Rodriguez" class="w-8 h-8 rounded-full">
+                                    <div>
+                                        <div class="font-medium text-sm">Mike Rodriguez</div>
+                                        <div class="text-xs text-muted-foreground">Frontend Developer</div>
+                                    </div>
+                                </div>
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-ring">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" alt="Emma Wilson" class="w-8 h-8 rounded-full">
+                                    <div>
+                                        <div class="font-medium text-sm">Emma Wilson</div>
+                                        <div class="text-xs text-muted-foreground">QA Engineer</div>
+                                    </div>
+                                </div>
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-ring">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="flex justify-end space-x-3 p-6 border-t border-border">
+                <button onclick="hideCreateProject()" class="px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors">
+                    Cancel
+                </button>
+                <button class="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors" data-implementation="Should create new project">
+                    Create Project
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: CreateProjectModal -->
+
+    <!-- Create Task Modal -->
+    <!-- @COMPONENT: CreateTaskModal -->
+    <div id="createTaskModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-card border border-border rounded-lg w-full max-w-lg">
+            <div class="flex items-center justify-between p-6 border-b border-border">
+                <h2 class="text-xl font-semibold">Create New Task</h2>
+                <button onclick="hideCreateTask()" class="p-2 hover:bg-accent rounded-lg transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="p-6">
+                <form class="space-y-4" data-mock="true">
+                    <div>
+                        <label for="taskTitle" class="block text-sm font-medium mb-2">Task Title *</label>
+                        <input 
+                            type="text" 
+                            id="taskTitle" 
+                            class="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                            placeholder="Enter task title"
+                            data-mock="true"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="taskDescription" class="block text-sm font-medium mb-2">Description</label>
+                        <textarea 
+                            id="taskDescription" 
+                            rows="3"
+                            class="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                            placeholder="Describe the task..."
+                            data-mock="true"
+                        ></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="taskAssignee" class="block text-sm font-medium mb-2">Assignee</label>
+                            <select id="taskAssignee" class="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent">
+                                <option>Select assignee...</option>
+                                <option>Alex Johnson</option>
+                                <option>Sarah Chen</option>
+                                <option>Mike Rodriguez</option>
+                                <option>Emma Wilson</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="taskDueDate" class="block text-sm font-medium mb-2">Due Date</label>
+                            <input 
+                                type="date" 
+                                id="taskDueDate" 
+                                class="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                                data-mock="true"
+                            >
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Priority</label>
+                            <select class="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent">
+                                <option>Low</option>
+                                <option selected>Medium</option>
+                                <option>High</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Status</label>
+                            <select class="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent">
+                                <option selected>To Do</option>
+                                <option>In Progress</option>
+                                <option>Done</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="flex justify-end space-x-3 p-6 border-t border-border">
+                <button onclick="hideCreateTask()" class="px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors">
+                    Cancel
+                </button>
+                <button class="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors" data-implementation="Should create new task">
+                    Create Task
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: CreateTaskModal -->
+
+    <!-- Notifications Panel -->
+    <div id="notificationsPanel" class="fixed top-16 right-4 w-80 bg-popover border border-border rounded-lg shadow-lg z-40 hidden">
+        <div class="p-4 border-b border-border">
+            <div class="flex items-center justify-between">
+                <h3 class="font-semibold">Notifications</h3>
+                <button class="text-sm text-primary hover:text-primary/80">Mark all as read</button>
+            </div>
+        </div>
+        
+        <div class="max-h-96 overflow-y-auto">
+            <!-- Notification items -->
+            <div class="p-4 border-b border-border hover:bg-accent/50 cursor-pointer" data-mock="true">
+                <div class="flex items-start space-x-3">
+                    <div class="w-2 h-2 bg-primary rounded-full mt-2"></div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium">New task assigned</p>
+                        <p class="text-xs text-muted-foreground">Sarah assigned you "Design new user onboarding flow"</p>
+                        <p class="text-xs text-muted-foreground mt-1">2 hours ago</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 border-b border-border hover:bg-accent/50 cursor-pointer" data-mock="true">
+                <div class="flex items-start space-x-3">
+                    <div class="w-2 h-2 bg-primary rounded-full mt-2"></div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium">Project updated</p>
+                        <p class="text-xs text-muted-foreground">Mobile App Redesign progress updated to 75%</p>
+                        <p class="text-xs text-muted-foreground mt-1">4 hours ago</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 hover:bg-accent/50 cursor-pointer" data-mock="true">
+                <div class="flex items-start space-x-3">
+                    <div class="w-2 h-2 bg-muted rounded-full mt-2"></div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-muted-foreground">Task completed</p>
+                        <p class="text-xs text-muted-foreground">Mike completed "Implement responsive navigation"</p>
+                        <p class="text-xs text-muted-foreground mt-1">1 day ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Navigation functions
+            function showLogin() {
+                document.getElementById('loginPage').classList.remove('hidden');
+                document.getElementById('signupPage').classList.add('hidden');
+                document.getElementById('mainApp').classList.add('hidden');
+            }
+
+            function showSignup() {
+                document.getElementById('signupPage').classList.remove('hidden');
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('mainApp').classList.add('hidden');
+            }
+
+            function showDashboard() {
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('signupPage').classList.add('hidden');
+                showProjects();
+            }
+
+            function showProjects() {
+                // Hide all views
+                hideAllViews();
+                
+                // Show projects view
+                document.getElementById('projectsView').classList.remove('hidden');
+                document.getElementById('pageTitle').textContent = 'Projects';
+                
+                // Update navigation states
+                updateNavActive('navProjects', 'mobileNavProjects');
+            }
+
+            function showProjectDetail(projectId) {
+                hideAllViews();
+                document.getElementById('projectDetailView').classList.remove('hidden');
+                document.getElementById('pageTitle').textContent = 'Project Details';
+            }
+
+            function showMyTasks() {
+                hideAllViews();
+                document.getElementById('pageTitle').textContent = 'My Tasks';
+                updateNavActive('navTasks', 'mobileNavTasks');
+                // TODO: Implement My Tasks view
+            }
+
+            function showTeam() {
+                hideAllViews();
+                document.getElementById('pageTitle').textContent = 'Team';
+                updateNavActive('navTeam', 'mobileNavTeam');
+                // TODO: Implement Team view
+            }
+
+            function showCalendar() {
+                hideAllViews();
+                document.getElementById('pageTitle').textContent = 'Calendar';
+                updateNavActive('navCalendar', null);
+                // TODO: Implement Calendar view
+            }
+
+            function showAnalytics() {
+                hideAllViews();
+                document.getElementById('pageTitle').textContent = 'Analytics';
+                updateNavActive('navAnalytics', null);
+                // TODO: Implement Analytics view
+            }
+
+            function showProfile() {
+                hideAllViews();
+                document.getElementById('pageTitle').textContent = 'Profile';
+                updateNavActive(null, 'mobileNavProfile');
+                // TODO: Implement Profile view
+            }
+
+            function hideAllViews() {
+                const views = ['projectsView', 'projectDetailView'];
+                views.forEach(view => {
+                    const element = document.getElementById(view);
+                    if (element) {
+                        element.classList.add('hidden');
+                    }
+                });
+            }
+
+            function updateNavActive(desktopId, mobileId) {
+                // Reset all nav items
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('text-primary', 'bg-accent');
+                    item.classList.add('text-muted-foreground');
+                });
+
+                // Reset mobile nav
+                document.querySelectorAll('#mobileNavProjects, #mobileNavTasks, #mobileNavTeam, #mobileNavProfile').forEach(item => {
+                    item.classList.remove('text-primary');
+                    item.classList.add('text-muted-foreground');
+                });
+
+                // Set active states
+                if (desktopId) {
+                    const desktopItem = document.getElementById(desktopId);
+                    if (desktopItem) {
+                        desktopItem.classList.remove('text-muted-foreground');
+                        desktopItem.classList.add('text-primary', 'bg-accent');
+                    }
+                }
+
+                if (mobileId) {
+                    const mobileItem = document.getElementById(mobileId);
+                    if (mobileItem) {
+                        mobileItem.classList.remove('text-muted-foreground');
+                        mobileItem.classList.add('text-primary');
+                    }
+                }
+            }
+
+            // Modal functions
+            function showCreateProject() {
+                document.getElementById('createProjectModal').classList.remove('hidden');
+            }
+
+            function hideCreateProject() {
+                document.getElementById('createProjectModal').classList.add('hidden');
+            }
+
+            function showCreateTask() {
+                document.getElementById('createTaskModal').classList.remove('hidden');
+            }
+
+            function hideCreateTask() {
+                document.getElementById('createTaskModal').classList.add('hidden');
+            }
+
+            function showTaskDetail(taskId) {
+                // TODO: Implement task detail view
+                console.log('Show task detail for:', taskId);
+            }
+
+            // UI functions
+            function toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const mainContent = document.getElementById('mainContent');
+                const logoText = document.getElementById('logoText');
+                const profileInfo = document.querySelector('.profile-info');
+                const navTexts = document.querySelectorAll('.nav-text');
+                
+                if (sidebar.classList.contains('sidebar-collapsed')) {
+                    // Expand
+                    sidebar.classList.remove('sidebar-collapsed');
+                    sidebar.classList.add('sidebar-expanded');
+                    mainContent.classList.remove('lg:ml-16');
+                    mainContent.classList.add('lg:ml-64');
+                    logoText.classList.remove('hidden');
+                    if (profileInfo) profileInfo.classList.remove('hidden');
+                    navTexts.forEach(text => text.classList.remove('hidden'));
+                } else {
+                    // Collapse
+                    sidebar.classList.remove('sidebar-expanded');
+                    sidebar.classList.add('sidebar-collapsed');
+                    mainContent.classList.remove('lg:ml-64');
+                    mainContent.classList.add('lg:ml-16');
+                    logoText.classList.add('hidden');
+                    if (profileInfo) profileInfo.classList.add('hidden');
+                    navTexts.forEach(text => text.classList.add('hidden'));
+                }
+            }
+
+            function toggleUserMenu() {
+                const menu = document.getElementById('userMenu');
+                menu.classList.toggle('hidden');
+            }
+
+            function toggleNotifications() {
+                const panel = document.getElementById('notificationsPanel');
+                panel.classList.toggle('hidden');
+            }
+
+            function toggleDarkMode() {
+                document.documentElement.classList.toggle('light');
+                const icon = document.querySelector('.dark-mode-icon');
+                if (document.documentElement.classList.contains('light')) {
+                    icon.className = 'fas fa-sun dark-mode-icon';
+                } else {
+                    icon.className = 'fas fa-moon dark-mode-icon';
+                }
+            }
+
+            function showChat() {
+                const chatPanel = document.getElementById('chatPanel');
+                chatPanel.classList.remove('translate-x-full');
+            }
+
+            function hideChat() {
+                const chatPanel = document.getElementById('chatPanel');
+                chatPanel.classList.add('translate-x-full');
+            }
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(event) {
+                const userMenu = document.getElementById('userMenu');
+                const notificationsPanel = document.getElementById('notificationsPanel');
+                
+                if (!event.target.closest('[onclick*="toggleUserMenu"]') && userMenu) {
+                    userMenu.classList.add('hidden');
+                }
+                
+                if (!event.target.closest('[onclick*="toggleNotifications"]') && notificationsPanel) {
+                    notificationsPanel.classList.add('hidden');
+                }
+            });
+
+            // Close modals when clicking backdrop
+            document.addEventListener('click', function(event) {
+                const modals = ['createProjectModal', 'createTaskModal'];
+                modals.forEach(modalId => {
+                    const modal = document.getElementById(modalId);
+                    if (modal && event.target === modal) {
+                        modal.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Make functions global
+            window.showLogin = showLogin;
+            window.showSignup = showSignup;
+            window.showDashboard = showDashboard;
+            window.showProjects = showProjects;
+            window.showProjectDetail = showProjectDetail;
+            window.showMyTasks = showMyTasks;
+            window.showTeam = showTeam;
+            window.showCalendar = showCalendar;
+            window.showAnalytics = showAnalytics;
+            window.showProfile = showProfile;
+            window.showCreateProject = showCreateProject;
+            window.hideCreateProject = hideCreateProject;
+            window.showCreateTask = showCreateTask;
+            window.hideCreateTask = hideCreateTask;
+            window.showTaskDetail = showTaskDetail;
+            window.toggleSidebar = toggleSidebar;
+            window.toggleUserMenu = toggleUserMenu;
+            window.toggleNotifications = toggleNotifications;
+            window.toggleDarkMode = toggleDarkMode;
+            window.showChat = showChat;
+            window.hideChat = hideChat;
+
+            // Initialize the app
+            showLogin();
+        })();
+    </script>
+</body>
+</html>

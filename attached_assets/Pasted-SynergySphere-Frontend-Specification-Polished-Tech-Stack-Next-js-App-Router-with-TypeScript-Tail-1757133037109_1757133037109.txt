@@ -1,0 +1,160 @@
+SynergySphere Frontend Specification (Polished)
+Tech Stack
+
+Next.js App Router with TypeScript
+
+Tailwind CSS (dark mode enabled)
+
+Modular, reusable components with responsive design (mobile-first)
+
+🌐 Global Layout
+
+Desktop:
+
+Collapsible sidebar navigation on the left.
+
+Top bar with search, dark/light toggle, user avatar menu.
+
+Mobile:
+
+Bottom navigation bar for quick access (Projects, Tasks, Profile).
+
+Top bar remains for search & user menu.
+
+Sidebar Links: Projects, My Tasks (active link highlighted).
+
+Collapsed: show only icons.
+
+Footer: App logo (top) + User avatar (bottom).
+
+📂 Projects View
+
+Header bar:
+
+Page title: Projects
+
+“+ New Project” button
+
+Global settings icon
+
+Notification bell with unread badge
+
+Project Cards Grid (responsive):
+
+Project image thumbnail
+
+Project name + subtitle
+
+Member avatars (stacked, max 3 + count)
+
+Deadline badge
+
+Status label (e.g., Active, Completed)
+
+Card interaction: Entire card is clickable → navigates to Project Detail.
+
+📝 Project Create/Edit View
+
+Form fields:
+
+Project Name (text input)
+
+Tags (multi-select dropdown)
+
+Project Manager (single-select dropdown)
+
+Deadline (date picker)
+
+Priority (radio: Low / Medium / High)
+
+Image upload (drag/drop or button)
+
+Description (textarea)
+
+Header actions:
+
+✅ Save button (green)
+
+❌ Discard button (blue)
+
+✅ Tasks View (Inside a Project)
+
+Breadcrumb nav: Projects > Project Name > Tasks
+
+Header actions: “+ New Task” button
+
+Task Cards Grid (styled like projects):
+
+Task title
+
+Assignee avatar
+
+Status badge (To-Do, In Progress, Done)
+
+Due date
+
+Priority indicator (color-coded)
+
+💬 Chat Window
+
+Threaded message panel (scrollable, grouped by day/time)
+
+Message input area:
+
+Text box (expandable)
+
+📎 Attachment icon (optional)
+
+Send button (primary color)
+
+🔔 Notification Panel
+
+List view: Notifications stacked vertically
+
+Each item: text + timestamp + “Mark as read” checkbox
+
+Unread notifications styled with highlighted background
+
+🔑 Auth Pages (Signup / Login)
+
+Full-width hero banner (branding / illustration)
+
+Form panel:
+
+Email, Password, Confirm Password (Signup only)
+
+Clean design, error validation
+
+Navigation: top nav with quick links (Home, Docs, Pricing)
+
+Footer: optional links (Terms, Privacy) + social icons
+
+🎨 Styling Guidelines
+
+Tailwind CSS utilities for:
+
+Spacing → p-4, m-2
+
+Typography → text-lg font-semibold
+
+Layout → grid, flex, gap-4
+
+Colors → bg-gray-900 text-white (dark mode)
+
+Responsive breakpoints:
+
+sm (mobile-first)
+
+md (tablet)
+
+lg (desktop)
+
+xl (wide screens)
+
+♻️ Reusability
+
+All cards, forms, buttons, badges, modals should be built as reusable components.
+
+Props-driven for flexibility (<ProjectCard project={project} />).
+
+Centralized UI components library (/components/ui).

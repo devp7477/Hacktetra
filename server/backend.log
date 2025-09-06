@@ -1,0 +1,10 @@
+
+> synergysphere-backend@1.0.0 dev
+> NODE_ENV=development NODE_PATH=.. tsx index.ts
+
+12:56:12 PM [express] API server running on port 5001
+12:56:42 PM [express] GET /api/auth/user 200 in 3ms :: {"id":"dev-user-123","email":"dev@example.com"…
+12:57:07 PM [express] GET /api/auth/user 200 in 0ms :: {"id":"dev-user-123","email":"dev@example.com"…
+12:57:07 PM [express] GET /api/notifications 200 in 1ms :: []
+12:57:07 PM [express] GET /api/projects 200 in 1ms :: []
+12:57:07 PM [express] GET /api/tasks/my 200 in 1ms :: []

@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Project {
+  @@map("project")
+  id               String          @id @default(uuid())
+  name             String
+  description      String?
+  managerId        String?
+  deadline         DateTime?
+  priority         String          @default("medium")
+  status           String          @default("active")
+  progress         Int             @default(0)
+  tags             String?
+  imageUrl         String?         @map("image_url")
+  testUserAssigned Boolean         @default(false) @map("test_user_assigned")
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  messages         ChatMessage[]
+  members          ProjectMember[]
+  tasks            Task[]
+  
+  @@index([status])
+  @@index([priority])
+}
+
+model Task {
+  @@map("task")
+  id          String    @id @default(uuid())
+  projectId   String
+  title       String
+  description String?
+  assigneeId  String?
+  status      String    @default("todo")
+  priority    String    @default("medium")
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@index([status])
+  @@index([priority])
+  @@index([projectId])
+}
+
+model User {
+  @@map("user")
+  id              String          @id @default(uuid())
+  email           String?         @unique
+  firstName       String?
+  lastName        String?
+  profileImageUrl String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  messages        ChatMessage[]
+  notifications   Notification[]
+  projectMembers  ProjectMember[]
+}
+
+model ProjectMember {
+  @@map("project_member")
+  id        String   @id @default(uuid())
+  projectId String
+  userId    String
+  role      String   @default("member")
+  joinedAt  DateTime @default(now())
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+}
+
+model ChatMessage {
+  @@map("chat_message")
+  id        String   @id @default(uuid())
+  projectId String
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  @@map("notification")
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
